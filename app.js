@@ -15,8 +15,6 @@ import mongoose from "mongoose";
 
 const app = express();
 
-const port = 2000;
-
 // connecting mongodb with the database
 mongoose.connect("mongodb+srv://SachinPal:Sachin-89@cluster0.avdhl.mongodb.net/todoDB");
 
@@ -86,7 +84,7 @@ app.post("/", (req, res) => {
 
         // To find the document for given page and adding the new note to it
         // If this document  is not found as page is new we create it using upsert
-        Custom.findOneAndUpdate({ title: name }, { $push: { items: docI } }, {upsert : true}, (err) => {
+        Custom.findOneAndUpdate({ title: name }, { $push: { items: docI } }, { upsert: true }, (err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -101,7 +99,7 @@ app.post("/", (req, res) => {
 });
 
 app.post("/delete", (req, res) => {
-    
+
     // getting the id of the item and converting it into an MongoDB Object
     const itemID = mongoose.Types.ObjectId(req.body.itemNote.trim());
 
@@ -109,11 +107,11 @@ app.post("/delete", (req, res) => {
     const listTitle = req.body.listName;
 
     // If we are on default page
-    if(listTitle === "Home"){
+    if (listTitle === "Home") {
 
         // Find the element with the id of item to be removed
-        Default.findByIdAndRemove({_id : itemID}, (err) => {
-            if(err){
+        Default.findByIdAndRemove({ _id: itemID }, (err) => {
+            if (err) {
                 console.log(err);
             } else {
                 console.log("Deleted Successfully");
@@ -123,18 +121,18 @@ app.post("/delete", (req, res) => {
             }
         });
     } else {
-        
+
         // find the document with given title first
         // then pull the document from the items element which is a list 
         // this should be done if the id of document matches with the id of item to be removed
-        Custom.findOneAndUpdate({title : listTitle}, {$pull : {items : {_id : itemID}}}, (err) => {
-            if(err){
+        Custom.findOneAndUpdate({ title: listTitle }, { $pull: { items: { _id: itemID } } }, (err) => {
+            if (err) {
                 console.log(err);
             } else {
                 console.log("Deleted Successfully");
 
                 // Once done return to the page
-                res.redirect("/"+listTitle);
+                res.redirect("/" + listTitle);
             }
         });
     }
@@ -169,6 +167,10 @@ app.get("/about", (req, res) => {
 });
 
 // to make us aware of fact that server is running
+let port = process.env.PORT;
+if (port == null || port == "") {
+    port = 2000;
+}
 app.listen(port, () => {
     console.log("Server Running");
 })
