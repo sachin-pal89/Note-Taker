@@ -18,6 +18,8 @@ const app = express();
 // connecting mongodb with the database
 mongoose.connect("mongodb+srv://SachinPal:Sachin-89@cluster0.avdhl.mongodb.net/todoDB");
 
+mongoose.set('strictQuery', false);
+
 // Schema for To-do List
 const taskSchema = new mongoose.Schema({
     title: String
