@@ -7,6 +7,8 @@ import express from "express";
 // to import local module of the project
 import * as date from "./date.js";
 
+import {} from "dotenv/config"
+
 // import lodash for handling the url
 import _ from "lodash";
 
@@ -16,7 +18,7 @@ import mongoose from "mongoose";
 const app = express();
 
 // connecting mongodb with the database
-mongoose.connect("mongodb+srv://SachinPal:Sachin-89@cluster0.avdhl.mongodb.net/todoDB");
+mongoose.connect(process.env.MONGOD);
 
 mongoose.set('strictQuery', false);
 
